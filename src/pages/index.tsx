@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import { FormEvent, useState } from "react";
 import { linkSchema } from "../../zod/schemas";
-import axios from "axios";
 
 const Home: NextPage = () => {
   const [origin, setOrigin] = useState("");
@@ -14,7 +13,14 @@ const Home: NextPage = () => {
     console.log(data);
     const { success } = linkSchema.safeParse(data);
     if (!success) return;
-    const response = await axios.post("/api/shortify", data);
+    const response = await (
+      await fetch(
+        `${
+          process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000"
+        }/api/shortify`,
+        { body: JSON.stringify(data), method: "POST" }
+      )
+    ).json();
     console.log(response);
   }
 
