@@ -4,7 +4,10 @@ import { linkSchema } from "../../../zod/schemas";
 
 interface Data {}
 
-export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+export default async function shortify(
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) {
   const body = req.body;
   const validation = linkSchema.safeParse({
     origin: body.origin,
@@ -25,4 +28,4 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
           .json({ message: "the short link is already being used" });
       return res.status(500).json({ message: "something went wrong" });
     });
-};
+}
