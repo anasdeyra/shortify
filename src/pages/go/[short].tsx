@@ -1,4 +1,6 @@
 import { link } from "@prisma/client";
+import { prisma } from "../../db/prismaClient";
+
 import { GetServerSideProps } from "next";
 import React, { useEffect } from "react";
 
@@ -10,10 +12,9 @@ export default function Short({ origin }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const short = ctx.query.short;
-  const link: link | null = await (
-    await fetch(`https://shortify-anas.vercel.app/api/go-to/${short}`)
-  ).json();
+  const short = String(ctx.query.short);
+
+  const link = await prisma.link.findFirst({ where: { short } });
 
   return {
     props: { origin: link?.origin || null },
@@ -21,5 +22,5 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 type Props = {
-  origin: string;
+  origin: string | null;
 };
