@@ -14,9 +14,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const short = ctx.query.short;
   const link: link | null = await (
     await axios.get(
-      `${
-        process.env.VERCEL_URL || "http://localhost:3000"
-      }/api/go-to/${short}/api/go-to/${short}`
+      `${process.env.VERCEL_URL || "http://localhost:3000"}/api/go-to/${short}`
     )
   ).data;
 
