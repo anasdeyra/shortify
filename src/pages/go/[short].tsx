@@ -11,6 +11,7 @@ export default function Short({ origin }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const short = ctx.query.short;
+  console.log(process.env.VERCEL_URL);
   const link: link | null = await (
     await fetch(
       `${process.env.VERCEL_URL || "http://localhost:3000"}/api/go-to/${short}`
